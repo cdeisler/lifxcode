@@ -20,6 +20,8 @@ metadata {
         attribute "label", "string"
         attribute "group", "string"
         attribute "location", "string"
+		
+		command "setTileEffect", [[name:"Tile Effect Command", type: "ENUM", description: "Pick an option", constraints: ["Off","Morph","Flame"] ] ]
     }
 
     preferences {
@@ -90,6 +92,12 @@ def setSaturation(number) {
 @SuppressWarnings("unused")
 def setColorTemperature(temperature) {
 
+}
+
+@SuppressWarnings("unused")
+def setTileEffect(effectType) {
+	log.debug "TileEffect:  ${effectType}"
+	sendActions parent.deviceSetTileEffect(effectType.toUpperCase(), 3, "")
 }
 
 private void sendActions(Map<String, List> actions) {
