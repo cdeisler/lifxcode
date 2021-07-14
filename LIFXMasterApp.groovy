@@ -639,10 +639,10 @@ Map<String, List> deviceSetMultiZoneEffect(String effectType, Integer speed, Str
 Map<String, List> deviceSetTileEffect(com.hubitat.app.DeviceWrapper device, String effectType, Integer speedVal, String direction) {
     log.debug "DeviceTileEffect:  ${effectType} Device: ${device} SpeedVal: ${speedVal}"
 	def actions = makeActions()
-    def palette = new int[32]
+    def paletteArray = new int[16]
 	def params = new int[8]
     //params[1] = direction == 'reverse' ? 0 : 1
-    actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: 5439, type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speedVal * 1000, parameters:params])
+    actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: 5439, type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speedVal * 1000, parameters:params;palette_count:0;palette:paletteArray])
     actions
 }
 
