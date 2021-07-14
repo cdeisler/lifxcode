@@ -636,12 +636,12 @@ Map<String, List> deviceSetMultiZoneEffect(String effectType, Integer speed, Str
     actions
 }
 
-Map<String, List> deviceSetTileEffect(com.hubitat.app.DeviceWrapper device, String effectType, Integer speed, String direction) {
-    log.debug "DeviceTileEffect:  ${effectType} Device: ${device} Speed: ${speed}"
+Map<String, List> deviceSetTileEffect(com.hubitat.app.DeviceWrapper device, String effectType, Integer speedVal, String direction) {
+    log.debug "DeviceTileEffect:  ${effectType} Device: ${device} SpeedVal: ${speedVal}"
 	def actions = makeActions()
     def params = new int[16]
     params[1] = direction == 'reverse' ? 0 : 1
-    actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: 5439, type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speed * 1000, parameters: params])
+    actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: 5439, type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speedVal * 1000])
     actions
 }
 
@@ -2520,9 +2520,11 @@ Float:f
                 STATE_EXTENDED_COLOR_ZONES: [type: 512, descriptor: 'zone_count:w;index:w;colors_count:b;colors:ha82'],
         ],
         TILE: [
-                SET_TILE_EFFECT           : [type: 719, descriptor: [reserved8:b;reserved9:b;instanceid:i;type:b;speed:i;duration:l;reserved6:i;reserved7:i;parameters:ia8;palette_count:b;palette:ha16]
+                SET_TILE_EFFECT           : [type: 719, descriptor: [reserved8:b;reserved9:b;instanceid:i;type:b;speed:i;duration:l;reserved6:i;reserved7:i;parameters:ia8;palette_count:b;palette:ha16]]
         ]
 ]
+
+//"tileIndex:b;length:b;reserved6:b;speed:i;duration:l;reserved7:i;reserved8:i;parameters:ia8"
 
 String renderMultizone(HashMap hashMap) {
     def builder = new StringBuilder();
