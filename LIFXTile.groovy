@@ -9,13 +9,15 @@
  */
 
 metadata {
-    definition(name: 'LIFX Tile', namespace: 'robheyes', author: 'Robert Alan Heyes', importUrl: 'https://raw.githubusercontent.com/robheyes/lifxcode/master/LIFXTile.groovy') {
+    definition(name: 'LIFX Tile', namespace: 'robheyes', author: 'Robert Alan Heyes', importUrl: 'https://raw.githubusercontent.com/cdeisler/lifxcode/master/LIFXTile.groovy') {
         capability 'Light'
         capability 'ColorControl'
         capability 'ColorTemperature'
         capability 'Polling'
         capability 'Initialize'
         capability 'Switch'
+        capability "Switch Level"
+        capability "Color Control"
 
         attribute "label", "string"
         attribute "group", "string"
@@ -74,30 +76,46 @@ def off() {
     sendActions parent.deviceOnOff('off', getUseActivityLog(), state.transitionTime ?: 0)
 }
 
-@SuppressWarnings("unused")
+def getDefaultTransitionDuration() {
+	return state.transitionDuration
+}
+
+
 def setColor(Map colorMap) {
-
+    sendActions parent.deviceSetColor(device, colorMap, getUseActivityLogDebug(), 0)
 }
 
-@SuppressWarnings("unused")
-def setHue(number) {
-
+def setHue(hue) {
+    sendActions parent.deviceSetHue(device, hue, getUseActivityLog(), 0)
 }
 
-@SuppressWarnings("unused")
-def setSaturation(number) {
-
+def setTest(test) {
+      device.getDeviceNetworkId()
 }
 
-@SuppressWarnings("unused")
+def setSaturation(saturation) {
+    sendActions parent.deviceSetSaturation(device, saturation, getUseActivityLog(), 0)
+}
+
+def setLevel(level, duration=getDefaultTransitionDuration()) {
+	log.debug("Begin setting groups level to ${level} over ${duration} seconds.")
+    if (level > 100) {
+		level = 100
+	} else if (level <= 0 || level == null) {
+		level = 1
+	}
+    
+    sendActions parent.deviceSetLevel(device, level as Number, getUseActivityLog(), duration)
+}
+
 def setColorTemperature(temperature) {
-
+    sendActions parent.deviceSetColorTemperature(device, temperature, getUseActivityLog(), state.transitionTime ?: 0)
 }
 
 @SuppressWarnings("unused")
 def setTileEffect(effectType) {
 	log.debug "TileEffect:  ${effectType}"
-	sendActions parent.deviceSetTileEffect(effectType.toUpperCase(), 3, "")
+	sendActions parent.deviceSetTileEffect(device, effectType.toUpperCase(), 3, "")
 }
 
 private void sendActions(Map<String, List> actions) {

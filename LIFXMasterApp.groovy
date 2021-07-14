@@ -26,7 +26,8 @@ definition(
         category: 'Discovery',
         iconUrl: '',
         iconX2Url: '',
-        iconX3Url: ''
+        iconX3Url: '',
+        importUrl: 'https://raw.githubusercontent.com/cdeisler/lifxcode/master/LIFXMasterApp.groovy'
 )
 
 preferences {
@@ -635,11 +636,11 @@ Map<String, List> deviceSetMultiZoneEffect(String effectType, Integer speed, Str
     actions
 }
 
-Map<String, List> deviceSetTileEffect(String effectType, Integer speed, String direction) {
+Map<String, List> deviceSetTileEffect(com.hubitat.app.DeviceWrapper device, String effectType, Integer speed, String direction) {
     def actions = makeActions()
     def params = new int[8]
     params[1] = direction == 'reverse' ? 0 : 1
-    actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: 5439, type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speed * 1000, parameters: params])
+    actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: device.getId(), type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speed * 1000, parameters: params])
     actions
 }
 
