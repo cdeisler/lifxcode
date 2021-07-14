@@ -2520,7 +2520,7 @@ Float:f
                 STATE_EXTENDED_COLOR_ZONES: [type: 512, descriptor: 'zone_count:w;index:w;colors_count:b;colors:ha82'],
         ],
         TILE: [
-                SET_TILE_EFFECT           : [type: 719, descriptor: [reserved8:b;reserved9:b;instanceid:i;type:b;speed:i;duration:l;reserved6:i;reserved7:i;parameters:ia8;palette_count:b;palette:ha16]]
+                SET_TILE_EFFECT           : [type: 719, descriptor: 'reserved8:b;reserved9:b;instanceid:i;type:b;speed:i;duration:l;reserved6:i;reserved7:i;parameters:ia8;palette_count:b;palette:ha16']
         ]
 ]
 
