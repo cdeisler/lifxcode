@@ -637,7 +637,8 @@ Map<String, List> deviceSetMultiZoneEffect(String effectType, Integer speed, Str
 }
 
 Map<String, List> deviceSetTileEffect(com.hubitat.app.DeviceWrapper device, String effectType, Integer speed, String direction) {
-    def actions = makeActions()
+    log.debug "DeviceTileEffect:  ${effectType} Device: ${device} Speed: ${speed}"
+	def actions = makeActions()
     def params = new int[8]
     params[1] = direction == 'reverse' ? 0 : 1
     actions.commands << makeCommand('TILE.SET_TILE_EFFECT', [instanceId: device.getId(), type: effectType == 'FLAME' ? 3 : 2, speed: effectType == 'OFF' ? 0 : speed * 1000, parameters: params])
@@ -2442,6 +2443,24 @@ private Map flattenedDescriptors() {
 @Lazy @Field Map<String, Integer> messageType = flattenedTypes()
 @Lazy @Field Map<String, String> descriptors = flattenedDescriptors()
 
+/*****
+LIFX Type: Map descriptor
+32 bytes String :t32
+16 Bytes UUID :ba16
+Uint8:b
+Uint16:h
+Uint32:i
+Uint64:l
+1 Reserved byte:b
+2 Reserved bytes:w
+4 Reserved bytes:i
+32 Bytes:ia8
+64 Bytes:ba64
+BoolInt:b
+Float:f
+
+
+*****/
 
 @Field static final Map msgTypes = [
         DEVICE   : [
@@ -2501,9 +2520,11 @@ private Map flattenedDescriptors() {
                 STATE_EXTENDED_COLOR_ZONES: [type: 512, descriptor: 'zone_count:w;index:w;colors_count:b;colors:ha82'],
         ],
         TILE: [
-                SET_TILE_EFFECT           : [type: 719, descriptor: "tileIndex:b;length:b;reserved6:b;speed:i;duration:l;reserved7:i;reserved8:i;parameters:ia8"]
+                SET_TILE_EFFECT           : [type: 719, descriptor: [reserved8:b;reserved9:b;instanceid:i;type:b;speed:i;duration:l;reserved6:i;reserved7:i;parameters:ia8;palette_count:b;palette:ha16]]
         ]
 ]
+
+//"tileIndex:b;length:b;reserved6:b;speed:i;duration:l;reserved7:i;reserved8:i;parameters:ia8"
 
 String renderMultizone(HashMap hashMap) {
     def builder = new StringBuilder();

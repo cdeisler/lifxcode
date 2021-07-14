@@ -114,7 +114,7 @@ def setColorTemperature(temperature) {
 
 @SuppressWarnings("unused")
 def setTileEffect(effectType) {
-	log.debug "TileEffect:  ${effectType} Device: ${device.getId()}"
+	log.debug "TileEffect:  ${effectType} Device: ${device}"
 	sendActions parent.deviceSetTileEffect(device, effectType.toUpperCase(), 3, "")
 }
 
